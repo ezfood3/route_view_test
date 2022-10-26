@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// use App\Http\Controller\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,28 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/home', function () {
+    return view('home');
+});
+
+Route::get('/register', [App\Http\Controllers\RegisterController::class, 'create'])
+    ->middleware('guest')
+    ->name('register');
+
+Route::post('/register', [App\Http\Controllers\RegisterController::class, 'store'])
+    ->middleware('guest');
+
+Route::get('/login', [App\Http\Controllers\LoginController::class, 'index'])
+    ->middleware('guest')
+    ->name('login');
+
+Route::post('/login', [App\Http\Controllers\LoginController::class, 'authenticate'])
+    ->middleware('guest');
+
+Route::get('/logout', [App\Http\Controllers\LoginController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
 
 // Route::get('/home/{name}', function ($name) { // 클로저 Closure
 //     return '안녕하세요. 저는 겁없는 MC '. $name . ' 입니다';
@@ -82,25 +105,25 @@ Route::get('/', function () {
 //     }
 // );
 
-Route::get('task/alert/{param}',
-    function(){
-        $task = [
-            'task_name' => '다우니 생일',
-            'due_date' => '2000-05-23 05:23:00',
-            'comment' => '<script>window.alert("안녕하세요")</script>',
-        ];
-        return view('task.alert')->with('task',$task);
-    }
-);
+// Route::get('task/alert/{param}',
+//     function(){
+//         $task = [
+//             'task_name' => '다우니 생일',
+//             'due_date' => '2000-05-23 05:23:00',
+//             'comment' => '<script>window.alert("안녕하세요")</script>',
+//         ];
+//         return view('task.alert')->with('task',$task);
+//     }
+// );
 
-Route::get('testif/{param}',
-    function($param=0) {
-        return view('task.testif')->with('num',$param);
-    }
-);
+// Route::get('testif/{param}',
+//     function($param=0) {
+//         return view('task.testif')->with('num',$param);
+//     }
+// );
 
-Route::get('testfor/{param}', 
-    function($param){
-        return view('task.testfor')->with('',$param);
-    }
-);
+// Route::get('testfor/{param}', 
+//     function($param){
+//         return view('task.testfor')->with('',$param);
+//     }
+// );
