@@ -4,6 +4,9 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Contracts\Foundation\Application;
+use App\DataProvider\UserToken;
+use App\Foundation\Auth\UserTokenProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +28,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        $this->app->make('auth')->provider(
+            'user_token',
+            function (Application $app, array $config) {
+                return new UserTokenProvider(new UserToken($app->make('db')));
+            }
+        );
     }
 }
